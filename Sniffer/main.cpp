@@ -58,7 +58,7 @@ int main(int argc, const char * argv[]) {
     
     pcap_setfilter(descr, &filter);
     
-    //pcap_loop(descr, -1, processPacket, (u_char *) &count);
+    pcap_loop(descr, -1, processPacket, (u_char *) &count);
     
     
     return 0;
