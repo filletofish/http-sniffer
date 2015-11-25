@@ -14,6 +14,7 @@
 
 
 void processPacket(u_char *arg, const struct pcap_pkthdr* pkthdr, const u_char* packet){
+    //[eq
     int i = 0, *counter = (int *)arg;
     printf("Packet count: %d/n", ++(*counter));
     printf("Recieved Packet Size: %d/n", pkthdr -> len);
