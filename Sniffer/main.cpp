@@ -5,7 +5,7 @@
 //
 //  Copyright © 2015 filletofish. All rights reserved.
 //
-
+// g++ -std=c++11 main.cpp -o main -lpcap
 //  Description:
 //  Printing IP SRC and IP DST of all packets
 //  if content-type is urlencoded, than all http payload is printed
@@ -48,6 +48,23 @@ vector<string> split(const string &s, char delim) {
     return elems;
 }
 
+string urlDecode(string SRC) {
+    string ret;
+    char ch;
+    int i, ii;
+    for (i=0; i<SRC.length(); i++) {
+        if (int(SRC[i])==37) {
+            sscanf(SRC.substr(i+1,2).c_str(), "%x", &ii);
+            ch=static_cast<char>(ii);
+            ret+=ch;
+            i=i+2;
+        } else {
+            ret+=SRC[i];
+        }
+    }
+    return (ret);
+}
+
 
 void processPacket(u_char *arg, const struct pcap_pkthdr* pkthdr, const u_char* packet) {
     string local_buff = "";
@@ -69,6 +86,7 @@ void processPacket(u_char *arg, const struct pcap_pkthdr* pkthdr, const u_char* 
         // if previous packet had content-type urlencoded
         if (content_to_get && content_length > 0 && tcphdr->th_ack == ack) {
             local_buff = global_buff;
+            payload = urlDecode(payload); // добавлено
             vector <string> keys_values = split(payload.c_str(), '&');
             for (vector<string>::iterator it = keys_values.begin(); it != keys_values.end(); ++it)
                 local_buff += *it + "\n";
