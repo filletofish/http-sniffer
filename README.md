@@ -6,7 +6,7 @@ If content-type is urlencoded, than all payload of http packet should be printed
 ####Compilation:
 
 ```
-gcc main.cpp -o main -lpcap
+g++ -std=c++11 main.cpp -o main -lpcap
 ```
 
 ####Launch:
